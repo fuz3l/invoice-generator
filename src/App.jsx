@@ -1,17 +1,16 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
+  </Router>
+);
 
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div className=''>
-<p className='text-amber-400 text-6xl'>hello!</p>
-        </div>
-    </>
-  )
-}
-
-export default App
+export default App;
