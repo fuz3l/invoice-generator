@@ -19,7 +19,8 @@ export const generatePDF = async (invoiceData, userData, invoiceNumber, currentD
       html2canvas: { 
         scale: 2,
         useCORS: true,
-        letterRendering: true
+        letterRendering: true,
+        allowTaint: false
       },
       jsPDF: { 
         unit: 'mm', 

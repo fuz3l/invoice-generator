@@ -22,20 +22,30 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { firebaseError } = useAuth();
+  const [logoBase64, setLogoBase64] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setLogoBase64(reader.result);
+      reader.readAsDataURL(file);
+    } else {
+      setLogoBase64("");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       const userCred = await createUserWithEmailAndPassword(auth, form.email, form.password);
       await updateProfile(userCred.user, { displayName: form.fullName });
-
       await setDoc(doc(db, "users", userCred.user.uid), {
         uid: userCred.user.uid,
         email: form.email,
@@ -44,9 +54,9 @@ const Register = () => {
         businessName: form.businessName,
         businessAddress: form.businessAddress,
         businessOwner: form.businessOwner,
-        gstin: form.gstin
+        gstin: form.gstin,
+        logoBase64
       });
-
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -259,6 +269,26 @@ const Register = () => {
                   />
                 </div>
               </div>
+            </div>
+
+            {/* Business Logo Upload */}
+            <div>
+              <label htmlFor="businessLogo" className="block text-sm font-medium text-gray-700">
+                Business Logo (optional)
+              </label>
+              <input
+                id="businessLogo"
+                name="businessLogo"
+                type="file"
+                accept="image/*"
+                onChange={handleLogoChange}
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {logoBase64 && (
+                <div className="mt-2">
+                  <img src={logoBase64} alt="Logo Preview" className="h-16 object-contain border rounded" />
+                </div>
+              )}
             </div>
 
             {error && (

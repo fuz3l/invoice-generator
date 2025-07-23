@@ -11,8 +11,10 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
   };
 
   const subtotal = calculateSubtotal();
-  const tax = subtotal * 0.1; // 10% tax
-  const total = subtotal + tax;
+  // Use GST percentage if provided, else 0
+  const gstPercent = invoiceData.gst ? parseFloat(invoiceData.gst) || 0 : 0;
+  const gstAmount = subtotal * (gstPercent / 100);
+  const total = subtotal + gstAmount;
 
   // Generate invoice number
   const invoiceNumber = `INV-${Date.now()}`;
@@ -43,6 +45,9 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
       <div style={{ borderBottom: '2px solid #e5e7eb', paddingBottom: 24, marginBottom: 24 }}>
         <div className="flex justify-between items-start">
           <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
             <h1 className="text-3xl font-bold mb-2" style={{ color: '#0f172a' }}>
               {userData?.businessName || "Your Business Name"}
             </h1>
@@ -72,6 +77,9 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
       <div style={{ borderBottom: '2px solid #cbd5e1', paddingBottom: 24, marginBottom: 24 }}>
         <div className="flex justify-between items-start">
           <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
             <h1 className="text-3xl font-bold mb-2" style={{ color: '#1e293b', fontFamily: 'Georgia, serif' }}>
               {userData?.businessName || "Your Business Name"}
             </h1>
@@ -107,6 +115,9 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
       <div style={{ marginBottom: 24 }}>
         <div className="flex justify-between items-start">
           <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
             <h1 className="text-2xl font-bold mb-2" style={{ color: '#222' }}>
               {userData?.businessName || "Your Business Name"}
             </h1>
@@ -142,6 +153,9 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
       <div style={{ borderBottom: '2px solid #fdba74', paddingBottom: 24, marginBottom: 24 }}>
         <div className="flex justify-between items-start">
           <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
             <h1 className="text-3xl font-bold mb-2" style={{ color: '#ea580c', fontFamily: 'Poppins, Arial, sans-serif' }}>
               {userData?.businessName || "Your Business Name"}
             </h1>
@@ -163,6 +177,196 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
         accent: '#ea580c',
         totalColor: '#ea580c',
         fontFamily: 'Poppins, Arial, sans-serif',
+      })}
+    </div>
+  );
+
+  // Elegant (sleek, gold accent)
+  const ElegantTemplate = () => (
+    <div
+      id="invoice-template"
+      className="p-10 rounded-2xl shadow-2xl max-w-3xl mx-auto"
+      style={{ background: '#fffdfa', color: '#3b3a30', border: '2px solid #e5c07b', fontFamily: 'Merriweather, serif' }}
+    >
+      <div style={{ borderBottom: '2px solid #e5c07b', paddingBottom: 24, marginBottom: 24 }}>
+        <div className="flex justify-between items-start">
+          <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
+            <h1 className="text-4xl font-extrabold mb-2" style={{ color: '#bfa14a', fontFamily: 'Merriweather, serif' }}>
+              {userData?.businessName || "Your Business Name"}
+            </h1>
+            <p className="mb-1" style={{ color: '#7c6f57' }}>{userData?.businessAddress || "Business Address"}</p>
+            <p className="mb-1" style={{ color: '#7c6f57' }}>GSTIN: {userData?.gstin || "GSTIN Number"}</p>
+            <p style={{ color: '#7c6f57' }}>Owner: {userData?.businessOwner || "Business Owner"}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <h2 className="text-3xl font-bold mb-2" style={{ color: '#bfa14a' }}>INVOICE</h2>
+            <p className="mb-1" style={{ color: '#7c6f57' }}>Invoice #: {invoiceNumber}</p>
+            <p className="mb-1" style={{ color: '#7c6f57' }}>Date: {currentDate}</p>
+          </div>
+        </div>
+      </div>
+      {renderCommonSections({
+        tableStyle: { border: '1px solid #e5c07b' },
+        thStyle: { background: '#e5c07b', color: '#3b3a30', border: '1px solid #e5c07b' },
+        tdStyle: { border: '1px solid #e5c07b' },
+        accent: '#bfa14a',
+        totalColor: '#bfa14a',
+        fontFamily: 'Merriweather, serif',
+      })}
+    </div>
+  );
+
+  // Corporate (blue/gray, sharp corners)
+  const CorporateTemplate = () => (
+    <div
+      id="invoice-template"
+      className="p-8 rounded-none shadow-lg max-w-4xl mx-auto"
+      style={{ background: '#f3f6fa', color: '#1a237e', border: '2px solid #90caf9', fontFamily: 'Roboto, Arial, sans-serif' }}
+    >
+      <div style={{ borderBottom: '2px solid #90caf9', paddingBottom: 24, marginBottom: 24 }}>
+        <div className="flex justify-between items-start">
+          <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
+            <h1 className="text-3xl font-bold mb-2" style={{ color: '#1a237e', fontFamily: 'Roboto, Arial, sans-serif' }}>
+              {userData?.businessName || "Your Business Name"}
+            </h1>
+            <p className="mb-1" style={{ color: '#3949ab' }}>{userData?.businessAddress || "Business Address"}</p>
+            <p className="mb-1" style={{ color: '#3949ab' }}>GSTIN: {userData?.gstin || "GSTIN Number"}</p>
+            <p style={{ color: '#3949ab' }}>Owner: {userData?.businessOwner || "Business Owner"}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <h2 className="text-2xl font-bold mb-2" style={{ color: '#1976d2' }}>INVOICE</h2>
+            <p className="mb-1" style={{ color: '#3949ab' }}>Invoice #: {invoiceNumber}</p>
+            <p className="mb-1" style={{ color: '#3949ab' }}>Date: {currentDate}</p>
+          </div>
+        </div>
+      </div>
+      {renderCommonSections({
+        tableStyle: { border: '1px solid #90caf9' },
+        thStyle: { background: '#90caf9', color: '#1a237e', border: '1px solid #90caf9' },
+        tdStyle: { border: '1px solid #90caf9' },
+        accent: '#1976d2',
+        totalColor: '#1a237e',
+        fontFamily: 'Roboto, Arial, sans-serif',
+      })}
+    </div>
+  );
+
+  // Playful (rounded, pink/yellow, fun font)
+  const PlayfulTemplate = () => (
+    <div
+      id="invoice-template"
+      className="p-8 rounded-3xl shadow-xl max-w-3xl mx-auto"
+      style={{ background: '#fff0f6', color: '#d72660', border: '3px dashed #ffd166', fontFamily: 'Comic Sans MS, Comic Sans, cursive' }}
+    >
+      <div style={{ borderBottom: '3px dashed #ffd166', paddingBottom: 24, marginBottom: 24 }}>
+        <div className="flex justify-between items-start">
+          <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
+            <h1 className="text-3xl font-extrabold mb-2" style={{ color: '#d72660', fontFamily: 'Comic Sans MS, Comic Sans, cursive' }}>
+              {userData?.businessName || "Your Business Name"}
+            </h1>
+            <p className="mb-1" style={{ color: '#f46036' }}>{userData?.businessAddress || "Business Address"}</p>
+            <p className="mb-1" style={{ color: '#f46036' }}>GSTIN: {userData?.gstin || "GSTIN Number"}</p>
+            <p style={{ color: '#f46036' }}>Owner: {userData?.businessOwner || "Business Owner"}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <h2 className="text-2xl font-bold mb-2" style={{ color: '#ffd166' }}>INVOICE</h2>
+            <p className="mb-1" style={{ color: '#f46036' }}>Invoice #: {invoiceNumber}</p>
+            <p className="mb-1" style={{ color: '#f46036' }}>Date: {currentDate}</p>
+          </div>
+        </div>
+      </div>
+      {renderCommonSections({
+        tableStyle: { border: '2px dashed #ffd166' },
+        thStyle: { background: '#ffd166', color: '#d72660', border: '2px dashed #ffd166' },
+        tdStyle: { border: '2px dashed #ffd166' },
+        accent: '#d72660',
+        totalColor: '#d72660',
+        fontFamily: 'Comic Sans MS, Comic Sans, cursive',
+      })}
+    </div>
+  );
+
+  // Monochrome (black/white, minimal)
+  const MonochromeTemplate = () => (
+    <div
+      id="invoice-template"
+      className="p-8 max-w-3xl mx-auto"
+      style={{ background: '#fff', color: '#111', border: '2px solid #111', fontFamily: 'Courier New, Courier, monospace' }}
+    >
+      <div style={{ borderBottom: '2px solid #111', paddingBottom: 24, marginBottom: 24 }}>
+        <div className="flex justify-between items-start">
+          <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
+            <h1 className="text-2xl font-bold mb-2" style={{ color: '#111', fontFamily: 'Courier New, Courier, monospace' }}>
+              {userData?.businessName || "Your Business Name"}
+            </h1>
+            <p className="mb-1" style={{ color: '#333' }}>{userData?.businessAddress || "Business Address"}</p>
+            <p className="mb-1" style={{ color: '#333' }}>GSTIN: {userData?.gstin || "GSTIN Number"}</p>
+            <p style={{ color: '#333' }}>Owner: {userData?.businessOwner || "Business Owner"}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>INVOICE</h2>
+            <p className="mb-1" style={{ color: '#333' }}>Invoice #: {invoiceNumber}</p>
+            <p className="mb-1" style={{ color: '#333' }}>Date: {currentDate}</p>
+          </div>
+        </div>
+      </div>
+      {renderCommonSections({
+        tableStyle: { border: '2px solid #111' },
+        thStyle: { background: '#fff', color: '#111', border: '2px solid #111' },
+        tdStyle: { border: '2px solid #111' },
+        accent: '#111',
+        totalColor: '#111',
+        fontFamily: 'Courier New, Courier, monospace',
+      })}
+    </div>
+  );
+
+  // Green (eco, green accent)
+  const GreenTemplate = () => (
+    <div
+      id="invoice-template"
+      className="p-8 rounded-lg shadow-lg max-w-4xl mx-auto"
+      style={{ background: '#f0fff4', color: '#065f46', border: '2px solid #34d399', fontFamily: 'Montserrat, Arial, sans-serif' }}
+    >
+      <div style={{ borderBottom: '2px solid #34d399', paddingBottom: 24, marginBottom: 24 }}>
+        <div className="flex justify-between items-start">
+          <div>
+            {userData?.logoBase64 && (
+              <img src={userData.logoBase64} alt="Business Logo" className="h-12 w-12 object-contain rounded mb-2 border" style={{maxWidth: 64}} />
+            )}
+            <h1 className="text-3xl font-bold mb-2" style={{ color: '#10b981', fontFamily: 'Montserrat, Arial, sans-serif' }}>
+              {userData?.businessName || "Your Business Name"}
+            </h1>
+            <p className="mb-1" style={{ color: '#065f46' }}>{userData?.businessAddress || "Business Address"}</p>
+            <p className="mb-1" style={{ color: '#065f46' }}>GSTIN: {userData?.gstin || "GSTIN Number"}</p>
+            <p style={{ color: '#065f46' }}>Owner: {userData?.businessOwner || "Business Owner"}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <h2 className="text-2xl font-bold mb-2" style={{ color: '#10b981' }}>INVOICE</h2>
+            <p className="mb-1" style={{ color: '#065f46' }}>Invoice #: {invoiceNumber}</p>
+            <p className="mb-1" style={{ color: '#065f46' }}>Date: {currentDate}</p>
+          </div>
+        </div>
+      </div>
+      {renderCommonSections({
+        tableStyle: { border: '1px solid #34d399' },
+        thStyle: { background: '#bbf7d0', color: '#065f46', border: '1px solid #34d399' },
+        tdStyle: { border: '1px solid #34d399' },
+        accent: '#10b981',
+        totalColor: '#065f46',
+        fontFamily: 'Montserrat, Arial, sans-serif',
       })}
     </div>
   );
@@ -251,8 +455,8 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
                 <span style={{ fontWeight: 500, fontFamily }}>₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between mb-2">
-                <span style={{ color: '#666', fontFamily }}>GST (10%):</span>
-                <span style={{ fontWeight: 500, fontFamily }}>₹{tax.toFixed(2)}</span>
+                <span style={{ color: '#666', fontFamily }}>GST{gstPercent ? ` (${gstPercent}%)` : ''}:</span>
+                <span style={{ fontWeight: 500, fontFamily }}>₹{gstAmount.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-lg font-bold" style={{ color: totalColor, borderTop: '1px solid #e5e7eb', paddingTop: 8, fontFamily }}>
                 <span>Total:</span>
@@ -281,7 +485,7 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
         <h2 className="text-2xl font-bold" style={{ color: '#0f172a' }}>Invoice Preview</h2>
         <div className="flex gap-3">
           <button
-            onClick={() => onGeneratePDF(invoiceData, userData, invoiceNumber, currentDate, subtotal, tax, total)}
+            onClick={() => onGeneratePDF(invoiceData, userData, invoiceNumber, currentDate, subtotal, gstAmount, total)}
             className="px-6 py-2 rounded-md font-medium transition-colors"
             style={{ background: '#2563eb', color: '#fff' }}
           >
@@ -304,6 +508,11 @@ const InvoicePreview = ({ invoiceData, onGeneratePDF, template = "modern" }) => 
       {template === 'classic' && <ClassicTemplate />}
       {template === 'minimal' && <MinimalTemplate />}
       {template === 'colorful' && <ColorfulTemplate />}
+      {template === 'elegant' && <ElegantTemplate />}
+      {template === 'corporate' && <CorporateTemplate />}
+      {template === 'playful' && <PlayfulTemplate />}
+      {template === 'monochrome' && <MonochromeTemplate />}
+      {template === 'green' && <GreenTemplate />}
       {(!template || template === 'modern') && <ModernTemplate />}
     </div>
   );

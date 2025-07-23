@@ -37,6 +37,9 @@ const Navbar = () => {
             
             {userData && (
               <div className="flex items-center space-x-4">
+                {userData.logoBase64 && (
+                  <img src={userData.logoBase64} alt="Business Logo" className="h-8 w-8 rounded-full object-contain border" />
+                )}
                 <div className="text-sm text-gray-700">
                   <span className="font-medium">{userData.fullName}</span>
                   <span className="text-gray-500 ml-2">({userData.email})</span>

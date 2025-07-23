@@ -11,6 +11,11 @@ const TEMPLATES = [
   { value: "classic", label: "Classic (Serif, Gray)" },
   { value: "minimal", label: "Minimal (Whitespace)" },
   { value: "colorful", label: "Colorful (Accent)" },
+  { value: "elegant", label: "Elegant (Gold, Sleek)" },
+  { value: "corporate", label: "Corporate (Blue/Gray)" },
+  { value: "playful", label: "Playful (Pink/Yellow, Fun)" },
+  { value: "monochrome", label: "Monochrome (Black/White)" },
+  { value: "green", label: "Green (Eco, Green Accent)" },
 ];
 
 const Dashboard = () => {

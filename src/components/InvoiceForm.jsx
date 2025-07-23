@@ -13,7 +13,8 @@ const InvoiceForm = ({ onInvoiceDataChange }) => {
         price: 0,
         description: ""
       }
-    ]
+    ],
+    gst: "" // Add GST field
   });
 
   const handleInputChange = (e) => {
@@ -134,6 +135,23 @@ const InvoiceForm = ({ onInvoiceDataChange }) => {
             />
           </div>
         </div>
+      </div>
+
+      {/* GST Manual Entry */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          GST (%) <span className="text-gray-400">(optional, manual entry)</span>
+        </label>
+        <input
+          type="number"
+          name="gst"
+          min="0"
+          step="0.01"
+          value={formData.gst}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+          placeholder="Enter GST percentage (e.g. 18)"
+        />
       </div>
 
       {/* Items */}
