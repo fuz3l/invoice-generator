@@ -143,7 +143,7 @@ const MLAnalytics = () => {
         console.error('Error creating model instances:', modelError);
         throw modelError;
       }
-      
+
       modelsRef.current = { forecast, segmentation, anomaly };
       setForecastModel(forecast);
       setSegmentationModel(segmentation);
@@ -218,7 +218,7 @@ const MLAnalytics = () => {
       console.log('Forecast results:', forecast);
       
       if (forecast && Array.isArray(forecast) && forecast.length > 0) {
-        setForecastResults(forecast);
+      setForecastResults(forecast);
         setDebugInfo('Forecast generated successfully');
         console.log('Forecast results set successfully');
       } else {
@@ -398,9 +398,17 @@ const MLAnalytics = () => {
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          boxWidth: 12,
+          padding: 10,
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
+          }
+        }
       },
     },
     scales: {
@@ -409,6 +417,16 @@ const MLAnalytics = () => {
         ticks: {
           callback: function(value) {
             return '₹' + value.toLocaleString();
+          },
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
+          }
+        }
+      },
+      x: {
+        ticks: {
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
           }
         }
       }
@@ -417,27 +435,49 @@ const MLAnalytics = () => {
 
   const scatterOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          boxWidth: 12,
+          padding: 10,
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
+          }
+        }
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'Invoice Total (₹)'
+          text: 'Invoice Total (₹)',
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
+          }
         },
         ticks: {
           callback: function(value) {
             return '₹' + value.toLocaleString();
+          },
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
           }
         }
       },
       y: {
         title: {
           display: true,
-          text: 'Number of Items'
+          text: 'Number of Items',
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
+          }
+        },
+        ticks: {
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12
+          }
         }
       }
     }
@@ -457,33 +497,33 @@ const MLAnalytics = () => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Machine Learning Analytics</h3>
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Machine Learning Analytics</h3>
         
         {invoices.length < 10 ? (
-          <div className="text-center py-8">
+          <div className="text-center py-6 sm:py-8">
             <div className="text-gray-400 mb-4">
-              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Need more data for ML</h3>
-            <p className="text-gray-600">
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Need more data for ML</h3>
+            <p className="text-sm sm:text-base text-gray-600 px-4">
               Create at least 10 invoices to enable machine learning features.
             </p>
           </div>
         ) : (
           <>
             <div className="mb-4">
-              <div className="flex space-x-2 mb-2">
-                <button
-                  onClick={initializeModels}
-                  disabled={mlLoading}
-                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white rounded-md transition-colors"
-                >
-                  {mlLoading ? 'Training Models...' : 'Initialize ML Models'}
-                </button>
+              <div className="flex flex-col sm:flex-row gap-2 mb-2">
+              <button
+                onClick={initializeModels}
+                disabled={mlLoading}
+                  className="px-3 py-2 sm:px-4 text-sm sm:text-base bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white rounded-md transition-colors"
+              >
+                {mlLoading ? 'Training Models...' : 'Initialize ML Models'}
+              </button>
                 <button
                   onClick={() => {
                     const testForecast = Array.from({ length: 30 }, (_, i) => 
@@ -492,17 +532,17 @@ const MLAnalytics = () => {
                     setForecastResults(testForecast);
                     console.log('Test forecast set:', testForecast);
                   }}
-                  className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md transition-colors"
+                  className="px-3 py-2 sm:px-4 text-sm sm:text-base bg-green-500 hover:bg-green-600 text-white rounded-md transition-colors"
                 >
                   Test Forecast Display
                 </button>
               </div>
-              <p className="text-xs text-gray-600 mt-2">
+              <p className="text-xs text-gray-600 mt-2 px-1">
                 ⚠️ Training may take 30-60 seconds. Please don't close the page during training.
               </p>
               
               {/* Model Consistency Information */}
-              <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+              <div className="mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg">
                 <h4 className="text-sm font-medium text-blue-800 mb-2">About Model Consistency</h4>
                 <div className="text-xs text-blue-700 space-y-1">
                   <p>• <strong>Different results are normal:</strong> ML models use random initialization and stochastic training</p>
@@ -515,10 +555,10 @@ const MLAnalytics = () => {
 
             {/* Training Progress */}
             {mlLoading && (
-              <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-blue-800">{trainingStatus}</span>
-                  <span className="text-sm text-blue-600">
+              <div className="mb-6 p-3 sm:p-4 bg-blue-50 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-1">
+                  <span className="text-xs sm:text-sm font-medium text-blue-800">{trainingStatus}</span>
+                  <span className="text-xs sm:text-sm text-blue-600">
                     {Math.round((trainingProgress.forecast + trainingProgress.segmentation + trainingProgress.anomaly) / 3)}%
                   </span>
                 </div>
@@ -530,7 +570,7 @@ const MLAnalytics = () => {
                     }}
                   ></div>
                 </div>
-                <div className="mt-2 grid grid-cols-3 gap-2 text-xs">
+                <div className="mt-2 grid grid-cols-3 gap-1 sm:gap-2 text-xs">
                   <div className="text-center">
                     <span className="text-blue-600">Forecast: {trainingProgress.forecast}%</span>
                   </div>
@@ -545,12 +585,12 @@ const MLAnalytics = () => {
             )}
 
             {/* Tab Navigation */}
-            <div className="flex space-x-1 mb-6">
+            <div className="flex flex-wrap gap-1 mb-6">
               {['forecast', 'segmentation', 'anomaly'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors flex-1 min-w-0 ${
                     activeTab === tab
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -565,7 +605,7 @@ const MLAnalytics = () => {
             <div className="min-h-80">
               {activeTab === 'forecast' && (
                 <div>
-                  <h4 className="text-md font-semibold text-gray-800 mb-4">Revenue Forecasting (Next 30 Days)</h4>
+                  <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">Revenue Forecasting (Next 30 Days)</h4>
                   {forecastResults ? (
                     <div>
                       {/* Debug info */}
@@ -575,9 +615,9 @@ const MLAnalytics = () => {
                         <p>Debug: Status: {debugInfo}</p>
                       </div>
                       
-                      <div className="h-80 mb-4">
+                      <div className="h-64 sm:h-80 mb-4">
                         {getForecastChartData() ? (
-                          <Line data={getForecastChartData()} options={chartOptions} />
+                        <Line data={getForecastChartData()} options={chartOptions} />
                         ) : (
                           <div className="flex items-center justify-center h-full bg-gray-50 rounded-lg">
                             <p className="text-gray-500">Chart data not available</p>
@@ -587,9 +627,9 @@ const MLAnalytics = () => {
                       
                       {/* Model Performance Metrics */}
                       {modelEvaluation && (
-                        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <div className="mb-6 p-3 sm:p-4 bg-gray-50 rounded-lg">
                           <h5 className="text-sm font-medium text-gray-800 mb-3">Model Performance Metrics</h5>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-xs sm:text-sm">
                             <div>
                               <span className="text-gray-600">R² Score:</span>
                               <span className={`ml-2 font-medium ${modelEvaluation.r2 > 0.7 ? 'text-green-600' : modelEvaluation.r2 > 0.5 ? 'text-yellow-600' : 'text-red-600'}`}>
@@ -610,8 +650,8 @@ const MLAnalytics = () => {
                             </div>
                           </div>
                           <div className="mt-2 text-xs text-gray-500">
-                            <p>• R² &gt; 70%: Excellent | R² &gt; 50%: Good | R² &lt; 50%: Needs improvement</p>
-                            <p>• Lower RMSE/MAE values indicate better accuracy</p>
+                            <p className="mb-1">• R² &gt; 70%: Excellent | R² &gt; 50%: Good | R² &lt; 50%: Needs improvement</p>
+                            <p className="mb-1">• Lower RMSE/MAE values indicate better accuracy</p>
                             <p>• MAPE shows average prediction error as percentage</p>
                           </div>
                         </div>
@@ -619,9 +659,9 @@ const MLAnalytics = () => {
 
                       {/* Model Assessment */}
                       {modelAssessment && (
-                        <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+                        <div className="mb-6 p-3 sm:p-4 bg-blue-50 rounded-lg">
                           <h5 className="text-sm font-medium text-blue-800 mb-3">Model Assessment</h5>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm mb-3">
                             <div>
                               <span className="text-blue-600">Overall Quality:</span>
                               <span className={`ml-2 font-medium capitalize ${
@@ -669,31 +709,31 @@ const MLAnalytics = () => {
                         </div>
                       )}
                       
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="text-center p-4 bg-blue-50 rounded-lg">
-                          <p className="text-sm font-medium text-blue-600">Total Forecasted Revenue</p>
-                          <p className="text-xl font-bold text-blue-800">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <div className="text-center p-3 sm:p-4 bg-blue-50 rounded-lg">
+                          <p className="text-xs sm:text-sm font-medium text-blue-600">Total Forecasted Revenue</p>
+                          <p className="text-lg sm:text-xl font-bold text-blue-800">
                             ₹{forecastResults.reduce((sum, val) => sum + val, 0).toLocaleString()}
                           </p>
                         </div>
-                        <div className="text-center p-4 bg-green-50 rounded-lg">
-                          <p className="text-sm font-medium text-green-600">Average Daily Revenue</p>
-                          <p className="text-xl font-bold text-green-800">
+                        <div className="text-center p-3 sm:p-4 bg-green-50 rounded-lg">
+                          <p className="text-xs sm:text-sm font-medium text-green-600">Average Daily Revenue</p>
+                          <p className="text-lg sm:text-xl font-bold text-green-800">
                             ₹{(forecastResults.reduce((sum, val) => sum + val, 0) / forecastResults.length).toFixed(2)}
                           </p>
                         </div>
-                        <div className="text-center p-4 bg-purple-50 rounded-lg">
-                          <p className="text-sm font-medium text-purple-600">Peak Day Revenue</p>
-                          <p className="text-xl font-bold text-purple-800">
+                        <div className="text-center p-3 sm:p-4 bg-purple-50 rounded-lg">
+                          <p className="text-xs sm:text-sm font-medium text-purple-600">Peak Day Revenue</p>
+                          <p className="text-lg sm:text-xl font-bold text-purple-800">
                             ₹{Math.max(...forecastResults).toFixed(2)}
                           </p>
                         </div>
                       </div>
                       
                       {/* Simple forecast display */}
-                      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                      <div className="mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
                         <h5 className="text-sm font-medium text-gray-800 mb-2">Forecast Values (First 10 days):</h5>
-                        <div className="grid grid-cols-5 gap-2 text-xs">
+                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
                           {forecastResults.slice(0, 10).map((value, index) => (
                             <div key={index} className="text-center p-2 bg-white rounded border">
                               <div className="font-medium">Day {index + 1}</div>
@@ -704,42 +744,42 @@ const MLAnalytics = () => {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-gray-600">Train the model to see revenue forecasts.</p>
+                    <p className="text-gray-600 text-sm sm:text-base">Train the model to see revenue forecasts.</p>
                   )}
                 </div>
               )}
 
               {activeTab === 'segmentation' && (
                 <div>
-                  <h4 className="text-md font-semibold text-gray-800 mb-4">Customer Segmentation</h4>
+                  <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">Customer Segmentation</h4>
                   {segmentationResults ? (
                     <div>
-                      <div className="h-80 mb-4">
+                      <div className="h-64 sm:h-80 mb-4">
                         <Doughnut data={getSegmentationChartData()} />
                       </div>
                       <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                           <thead className="bg-gray-50">
                             <tr>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Segment</th>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Spent</th>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoices</th>
+                              <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                              <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Segment</th>
+                              <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Spent</th>
+                              <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoices</th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
                             {segmentationResults.slice(0, 10).map((customer, index) => (
                               <tr key={index}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">
                                   {customer.name}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                                   Segment {customer.segment + 1}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                                   ₹{customer.totalSpent.toLocaleString()}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                                   {customer.invoiceCount}
                                 </td>
                               </tr>
@@ -749,29 +789,29 @@ const MLAnalytics = () => {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-gray-600">Train the model to see customer segments.</p>
+                    <p className="text-gray-600 text-sm sm:text-base">Train the model to see customer segments.</p>
                   )}
                 </div>
               )}
 
               {activeTab === 'anomaly' && (
                 <div>
-                  <h4 className="text-md font-semibold text-gray-800 mb-4">Anomaly Detection</h4>
+                  <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">Anomaly Detection</h4>
                   {anomalyResults ? (
                     <div>
-                      <div className="h-80 mb-4">
+                      <div className="h-64 sm:h-80 mb-4">
                         <Scatter data={getAnomalyChartData()} options={scatterOptions} />
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="text-center p-4 bg-green-50 rounded-lg">
-                          <p className="text-sm font-medium text-green-600">Normal Invoices</p>
-                          <p className="text-xl font-bold text-green-800">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div className="text-center p-3 sm:p-4 bg-green-50 rounded-lg">
+                          <p className="text-xs sm:text-sm font-medium text-green-600">Normal Invoices</p>
+                          <p className="text-lg sm:text-xl font-bold text-green-800">
                             {anomalyResults.filter(item => !item.isAnomaly).length}
                           </p>
                         </div>
-                        <div className="text-center p-4 bg-red-50 rounded-lg">
-                          <p className="text-sm font-medium text-red-600">Anomaly Invoices</p>
-                          <p className="text-xl font-bold text-red-800">
+                        <div className="text-center p-3 sm:p-4 bg-red-50 rounded-lg">
+                          <p className="text-xs sm:text-sm font-medium text-red-600">Anomaly Invoices</p>
+                          <p className="text-lg sm:text-xl font-bold text-red-800">
                             {anomalyResults.filter(item => item.isAnomaly).length}
                           </p>
                         </div>
@@ -784,8 +824,8 @@ const MLAnalytics = () => {
                               .filter(item => item.isAnomaly)
                               .slice(0, 5)
                               .map((item, index) => (
-                                <div key={index} className="p-3 bg-red-50 rounded-lg">
-                                  <p className="text-sm text-red-800">
+                                <div key={index} className="p-2 sm:p-3 bg-red-50 rounded-lg">
+                                  <p className="text-xs sm:text-sm text-red-800">
                                     Invoice #{item.originalInvoice.invoiceNumber} - 
                                     ₹{item.originalInvoice.total?.toFixed(2)} 
                                     ({item.originalInvoice.items?.length || 0} items)
@@ -797,7 +837,7 @@ const MLAnalytics = () => {
                       )}
                     </div>
                   ) : (
-                    <p className="text-gray-600">Train the model to detect anomalies.</p>
+                    <p className="text-gray-600 text-sm sm:text-base">Train the model to detect anomalies.</p>
                   )}
                 </div>
               )}
