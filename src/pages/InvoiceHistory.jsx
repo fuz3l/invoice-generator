@@ -37,28 +37,41 @@ const InvoiceHistory = () => {
 
   const handleDownloadInvoice = async (invoice) => {
     try {
+      console.log("Downloading invoice:", invoice);
+      
       // Recreate the invoice data structure for PDF generation
       const invoiceData = {
         customerName: invoice.customerName,
         customerEmail: invoice.customerEmail,
         customerPhone: invoice.customerPhone,
         customerAddress: invoice.customerAddress,
-        items: invoice.items
+        items: invoice.items || []
       };
+
+      console.log("Invoice data for PDF:", invoiceData);
+
+      // Calculate totals if they're not available
+      const subtotal = invoice.subtotal || invoiceData.items.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+      const tax = invoice.tax || 0;
+      const total = invoice.total || (subtotal + tax);
+
+      console.log("Calculated totals:", { subtotal, tax, total });
 
       await generatePDF(
         invoiceData,
         userData,
         invoice.invoiceNumber,
         invoice.date,
-        invoice.subtotal,
-        invoice.tax,
-        invoice.total,
+        subtotal,
+        tax,
+        total,
         currentUser.uid
       );
+      
+      alert("Invoice downloaded successfully!");
     } catch (error) {
       console.error("Error downloading invoice:", error);
-      alert("Error downloading invoice. Please try again.");
+      alert(`Error downloading invoice: ${error.message}. Please try again.`);
     }
   };
 

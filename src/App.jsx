@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import InvoiceHistory from "./pages/InvoiceHistory";
+import Analytics from "./pages/Analytics";
+import MLDashboard from "./pages/MLDashboard";
 import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
@@ -36,6 +38,22 @@ const App = () => {
           element={
             <PrivateRoute>
               <InvoiceHistory />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/analytics" 
+          element={
+            <PrivateRoute>
+              <Analytics />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/ml-dashboard" 
+          element={
+            <PrivateRoute>
+              <MLDashboard />
             </PrivateRoute>
           } 
         />

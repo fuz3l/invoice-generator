@@ -4,6 +4,7 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import InvoiceForm from "../components/InvoiceForm";
 import InvoicePreview from "../components/InvoicePreview";
+import SalesGraph from "../components/SalesGraph";
 import { generatePDF } from "../utils/generatePDF";
 
 const TEMPLATES = [
@@ -155,8 +156,13 @@ VITE_FIREBASE_APP_ID=your_app_id`}
           </div>
         </div>
 
+        {/* Sales Graph */}
+        <div className="mt-12">
+          <SalesGraph currentUser={currentUser} />
+        </div>
+
         {/* Quick Stats */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-blue-100 text-blue-600">

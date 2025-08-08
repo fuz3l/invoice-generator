@@ -31,8 +31,20 @@ const Register = () => {
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 200 * 1024) { // 200KB limit
+        setError("Logo file is too large. Please select an image under 200KB.");
+        setLogoBase64("");
+        return;
+      }
       const reader = new FileReader();
-      reader.onloadend = () => setLogoBase64(reader.result);
+      reader.onloadend = () => {
+        setLogoBase64(reader.result);
+        setError(""); // clear any previous error
+      };
+      reader.onerror = () => {
+        setError("Failed to read logo file. Please try another image.");
+        setLogoBase64("");
+      };
       reader.readAsDataURL(file);
     } else {
       setLogoBase64("");
@@ -43,9 +55,16 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
+    // Prevent submit if logoBase64 is set but empty (error state)
+    if (logoBase64 === "" && document.getElementById("businessLogo").files.length > 0) {
+      setError("Please select a valid logo image under 200KB.");
+      setLoading(false);
+      return;
+    }
     try {
       const userCred = await createUserWithEmailAndPassword(auth, form.email, form.password);
       await updateProfile(userCred.user, { displayName: form.fullName });
+      const safeLogoBase64 = typeof logoBase64 === "string" ? logoBase64 : "";
       await setDoc(doc(db, "users", userCred.user.uid), {
         uid: userCred.user.uid,
         email: form.email,
@@ -55,11 +74,12 @@ const Register = () => {
         businessAddress: form.businessAddress,
         businessOwner: form.businessOwner,
         gstin: form.gstin,
-        logoBase64
+        logoBase64: safeLogoBase64
       });
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message);
+      console.error("Registration error:", err);
+      setError("Registration failed: " + (err.message || "Unknown error. Please try again. If you uploaded a logo, try a smaller image."));
     } finally {
       setLoading(false);
     }
