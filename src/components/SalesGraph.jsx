@@ -179,11 +179,11 @@ const SalesGraph = ({ currentUser }) => {
 
   if (loading) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <div className="flex items-center justify-center h-64">
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+        <div className="flex items-center justify-center h-48 sm:h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading sales data...</p>
+            <p className="text-gray-600 text-sm sm:text-base">Loading sales data...</p>
           </div>
         </div>
       </div>
@@ -191,11 +191,11 @@ const SalesGraph = ({ currentUser }) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 sm:mb-0">Sales Analytics</h3>
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-4">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-800">Sales Analytics</h3>
         
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           {/* Time Range Selector */}
           <select
             value={timeRange}
@@ -221,39 +221,39 @@ const SalesGraph = ({ currentUser }) => {
       </div>
 
       {invoices.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-8 sm:py-12">
           <div className="text-gray-400 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No sales data available</h3>
-          <p className="text-gray-600">
+          <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">No sales data available</h3>
+          <p className="text-sm sm:text-base text-gray-600">
             Create your first invoice to see sales analytics here.
           </p>
         </div>
       ) : (
-        <div className="h-80">
+        <div className="h-64 sm:h-80">
           {renderChart()}
         </div>
       )}
 
       {/* Summary Stats */}
       {invoices.length > 0 && (
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm font-medium text-blue-600">Total Revenue</p>
-            <p className="text-xl font-bold text-blue-800">
+        <div className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          <div className="text-center p-3 sm:p-4 bg-blue-50 rounded-lg">
+            <p className="text-xs sm:text-sm font-medium text-blue-600">Total Revenue</p>
+            <p className="text-lg sm:text-xl font-bold text-blue-800">
               ₹{invoices.reduce((sum, invoice) => sum + (invoice.total || 0), 0).toLocaleString()}
             </p>
           </div>
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <p className="text-sm font-medium text-green-600">Total Invoices</p>
-            <p className="text-xl font-bold text-green-800">{invoices.length}</p>
+          <div className="text-center p-3 sm:p-4 bg-green-50 rounded-lg">
+            <p className="text-xs sm:text-sm font-medium text-green-600">Total Invoices</p>
+            <p className="text-lg sm:text-xl font-bold text-green-800">{invoices.length}</p>
           </div>
-          <div className="text-center p-4 bg-purple-50 rounded-lg">
-            <p className="text-sm font-medium text-purple-600">Avg. Invoice Value</p>
-            <p className="text-xl font-bold text-purple-800">
+          <div className="text-center p-3 sm:p-4 bg-purple-50 rounded-lg">
+            <p className="text-xs sm:text-sm font-medium text-purple-600">Avg. Invoice Value</p>
+            <p className="text-lg sm:text-xl font-bold text-purple-800">
               ₹{(invoices.reduce((sum, invoice) => sum + (invoice.total || 0), 0) / invoices.length).toFixed(2)}
             </p>
           </div>
